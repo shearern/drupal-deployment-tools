@@ -1,0 +1,6 @@
+name = "SBC Version"
+description = "Tag the instance and version of the database"
+package = "SBC"
+core = 7.x
+
+stylesheets[all][] = sbc_version.css
