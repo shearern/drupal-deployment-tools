@@ -2,6 +2,7 @@
 '''Nate's Deployment Tools for Drupal instances'''
 import os
 import sys
+import gflags
 
 # This script is a hook for all of the sub commands
 
@@ -11,8 +12,10 @@ def cmd_name():
 
 
 def list_commands():
+    '''List the actions (scripts) that can be invoked'''
+
     commands = (
-        ('init_project', "Initialize a new Drupal project for deployment"),
+        ('init_dev_repo', "Initialize the development repo of a Drupal project"),
     )
 
     print "Usage: %s cmd (options)" % (cmd_name())
@@ -27,37 +30,56 @@ def list_commands():
     print "Type %s help cmd: to get help on a specific command" % (cmd_name())
 
 
+def load_action(action_name):
+    '''Load the requested action module'''
+    action_mod = None
+    if action_name == 'init_dev_repo':
+        from drupal_deploy_tools.actions import init_dev_repo as action_mod
+    return action_mod
+
+
 def usage_error(usage_error):
     print "USAGE ERROR:", usage_error
     list_commands()
     sys.exit(1)
 
 
-
-
 if __name__ == '__main__':
 
-    try:
-        action = sys.argv[1]
+    # Determin action
+    do_help = False
+    argv = sys.argv[:]
+    action = argv[1]
+    argv.pop(1)
 
-        if action == 'init_project':
-            # import...
-            # module.execute()
-            pass
-
-        elif action == 'help':
-            if action == 'init_project':
-                # import...
-                # module.help()
-                pass
-            else:
-                usage_error("Invalid action: " + action)
-
+    # Handle help first
+    if action == 'help':
+        if len(argv) == 1:
+            list_commands()
+            sys.exit(0)
         else:
-            usage_error("Invalid action: " + action)
+            action = argv[1]
+            argv.pop(1)
+            do_help = True
 
+    # Load action module
+    action_mod = load_action(action)
+    if action_mod is None:
+        usage_error("No module for action: " + action)
 
-    except IndexError:
-        usage_error("You must specify an action")
+    # Parse flags
+    argv[0] += ' ' + action
+    if do_help:
+        print ""
+        print "%s DETAILS:" % (action.upper())
+        print action_mod.usage_help()
+        argv.append('--help')
+    try:
+        gflags.FLAGS(argv)  # parse flags
+    except gflags.FlagsError, e:
+        abort("%s\nUsage: %s ARGS\n%s" % (e, sys.argv[0], gflags.FLAGS))
+
+    # Run action
+    action_mod.execute()
 
     print "Finished"
