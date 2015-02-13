@@ -1,8 +1,15 @@
 '''Initialize development repo for deployment'''
 import os
 import gflags
-
 from textwrap import dedent
+
+from common import mkdir
+
+gflags.DEFINE_string('root',
+    short_name = 'D',
+    default    = '.',
+    help       = 'Folder to initialize as deployment repo root')
+
 
 def usage_help():
     return dedent("""\
@@ -10,19 +17,15 @@ def usage_help():
         templates.
         """)
 
-gflags.DEFINE_string('target',
-    short_name = 't',
-    default    = '.',
-    help       = 'Folder to initialize as deployment repo root')
-
-
-def mkdir(path):
-    if not os.path.exists(path):
-        print "Creating %s/" % (path)
-        os.mkdir(path)
-
-
-def execute():
+def execute(argv):
     flags = gflags.FLAGS
 
-    mkdir(os.path.join(flags.target, 'pkgs'))
+    path = os.path.join(flags.root, 'DRUPAL_DEV_REPO')
+    if not os.path.exists(path):
+        print "Creating", path
+        with open(path, 'wt') as fh:
+            msg = "This file marks this folder as " 
+            msg += "the root of Drupal development project"
+            print >>fh, msg
+
+    mkdir(os.path.join(flags.root, 'pkgs'))
