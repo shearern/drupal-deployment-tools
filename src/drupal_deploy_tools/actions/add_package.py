@@ -9,12 +9,13 @@ from common_dev_repo import find_dev_repo_path
 from drupal_deploy_tools.config.Package import Package
 
 def usage_help():
-    return dedent("""\
+    return """\
+        USAGE: add_package (options)
+    
         Call to create a new package folder in the development repo to track
-        a component of the drupal site.
-
-        Specify package name as argument
-        """)
+        a component of the drupal site.  This will create the folder for storing
+        the package files and initialize the info file describing the package.
+        """
 
 gflags.DEFINE_string('name',
     short_name = 'N',

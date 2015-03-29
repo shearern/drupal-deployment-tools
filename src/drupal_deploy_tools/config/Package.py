@@ -1,6 +1,6 @@
 import os
 
-from YamlFileObject import YamlFileObject, YamlInfoError
+from YamlFileObject import YamlFileObject
 
 
 def get_package_info(x, y, z, a, b, c):
