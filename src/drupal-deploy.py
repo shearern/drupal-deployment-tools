@@ -1,6 +1,7 @@
 #!/usr/bin/python
-'''Nate's Deployment Tools for Drupal instances
+'''Nate's Deployment Tools for Drupal instances'''
 
+HELP_DETAIL='''\
 +-----------+                                                                                  
 |           |                         +-------------------+   +-------------------+
 | External  |                         |                   |   |                   |
@@ -16,16 +17,28 @@
                                                  website-1.0.0.drupal
 
 Typical Usage:
-On development workstation, in project directory, run:
-    $ drupal-deploy.py init_dev_dir
-    $ vim drupal-project.ini
-    $ drupal-deploy.py add_component --name=base --type=drupal_module --ver=7.35
-        --url=http://ftp.drupal.org/files/projects/drupal-7.35.tar.gz
-    $ drupal-deploy.py build --ver=1.0.0
-On server, in deployment directory, run:
-    # drupal-deploy.py init_deploy_dir
-    # vim drupal-instance.ini
-    # drupal-deploy install my-project-1.0.0.drupal
+    On development workstation, in project directory, run:
+        $ drupal-deploy.py init_dev_dir
+        $ vim drupal-project.ini
+        $ drupal-deploy.py add_component --name=base --type=drupal_module --ver=7.35
+            --url=http://ftp.drupal.org/files/projects/drupal-7.35.tar.gz
+        $ drupal-deploy.py build --ver=1.0.0
+    On server, in deployment directory, run:
+        # drupal-deploy.py init_deploy_dir
+        # vim drupal-instance.ini
+        # drupal-deploy install my-project-1.0.0.drupal
+
+Glossary:
+    Deployment Directory    Directory on server where drupal project is deployed to.
+                            This directory will have multiple directories including
+                            the www/ directory containing the files to serve.
+    Deployment Package      A single file representing a specific version of the
+                            project code and assets (excluding user files).  This can
+                            be "installed" into a Deployment Directory.
+    Development Directory   Project directory on development workstation where developer
+                            creates the Druapl proejct
+
+
 '''
 # This script is a hook for all of the sub commands
 
@@ -73,8 +86,8 @@ def list_commands():
 def load_action(action_name):
     '''Load the requested action module'''
     action_mod = None
-    if action_name == 'init_dev_repo':
-        from drupal_deploy_tools.actions import init_dev_repo as action_mod
+    if action_name == 'init_dev_dir':
+        from drupal_deploy_tools.actions import init_dev_dir as action_mod
     if action_name == 'add_package':
         from drupal_deploy_tools.actions import add_package as action_mod
     return action_mod
@@ -108,6 +121,8 @@ if __name__ == '__main__':
     if action == 'help' or action == '--help':
         if len(argv) == 1:
             print_help_header()
+            print HELP_DETAIL.rstrip()
+            print ""
             list_commands()
             sys.exit(0)
         else:
