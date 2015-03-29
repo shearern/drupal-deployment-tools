@@ -1,0 +1,3 @@
+[submodule "lib/PyWizard"]
+	path = lib/PyWizard
+	url = https://github.com/shearern/PyWizard.git
