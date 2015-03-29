@@ -1,0 +1,7 @@
+#!/bin/bash
+# drupal-deploy - Bash script to invoke deploy-drupal utility
+
+PROJECT_ROOT=`dirname "$0"`
+export PYTHONPATH="$PROJECT_ROOT/src:$PROJECT_ROOT/libs/PyWizard/src"
+
+/usr/bin/python "$PROJECT_ROOT/src/drupal-deploy.py" $*
