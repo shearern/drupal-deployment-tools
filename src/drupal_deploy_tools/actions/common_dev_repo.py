@@ -1,4 +1,4 @@
-'''Function related to working with the dev_repo'''
+'''Functions related to working with the development directory'''
 import os
 import gflags
 
