@@ -22,6 +22,7 @@ class ProjectConfig(object):
 
     def save(self):
         with open(self.path, 'wt') as fh:
+            print "Saving", self.path
             self._config.write(fh)
 
 
@@ -41,6 +42,7 @@ class ProjectConfig(object):
     def title(self, value):
         if not self._config.has_section('project'):
             self._config.add_section('project')
+        print "setting", value
         self._config.set('project', 'title', str(value))
         
     

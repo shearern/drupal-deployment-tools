@@ -58,6 +58,7 @@ class InitDevDirectory(PyMainWizard):
         config.project_name = self.ask_name('name',
             "Name to identify project",
             default = gflags.FLAGS.name)
+        print gflags.FLAGS.title
         config.title = self.ask_simple('title',
             "Title to display for project",
             default = gflags.FLAGS.title)

@@ -4,4 +4,4 @@
 PROJECT_ROOT=`dirname "$0"`
 export PYTHONPATH="$PROJECT_ROOT/src:$PROJECT_ROOT/lib/PyWizard/src"
 
-/usr/bin/python "$PROJECT_ROOT/src/drupal-deploy.py" $*
+/usr/bin/python "$PROJECT_ROOT/src/drupal-deploy.py" $@
