@@ -5,28 +5,40 @@ import gflags
 from common import ActionUsageError
 
 gflags.DEFINE_string('dev_repo',
-    short_name = 'D',
+    short_name = 'w',
     default    = '.',
     help       = 'Path to drupal project development repo working directory')
 
 
 def _check_is_dev_repo_root(path):
     # Check path
-    if os.path.exists(os.path.join(path, 'DRUPAL_DEV_REPO')):
+    if os.path.exists(os.path.join(path, 'drupal-project.ini')):
+        return True
+
+
+def _search_up_for_dev_repo_path(path):
+    # Check current path
+    if _check_is_dev_repo_root(path):
         return path
 
     # Check parent path
     path = os.path.abspath(path)
     parent = os.path.dirname(path)
     if path != parent:
-        return find_dev_repo_root(parent)
+        return _search_up_for_dev_repo_path(parent)
     else:
         return None
 
 
 def find_dev_repo_path():
     '''Get the path to the dev_repo to work on'''
-    path = _check_is_dev_repo_root(gflags.FLAGS.dev_repo)
+    # Use commandline option
+    if _check_is_dev_repo_root(gflags.FLAGS.dev_repo):
+        return gflags.FLAGS.dev_repo
+    # Search from current directory
+    if path is None:
+        path = _search_up_for_dev_repo_path(os.cwdir)
+
     if path is None:
         raise ActionUsageError("Not in a drupal development repo")
     return path

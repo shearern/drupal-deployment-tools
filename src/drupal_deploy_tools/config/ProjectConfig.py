@@ -21,5 +21,5 @@ class ProjectConfig(ConfigBase):
     @title.setter
     def title(self, value):
         self._set_ini_prop('project', 'title', value)
-        
+
     

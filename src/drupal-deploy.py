@@ -62,7 +62,8 @@ def list_commands():
     '''List the actions (scripts) that can be invoked'''
 
     commands = (
-        ('add_component *',   "Call to create a new component"),
+        ('add_component',   "Call to create a new component"),
+        ('download',        "Download the source for a component")
         ('update_component *',"Pull down the latest version of a component"),
         ('build *',           "Build deployment package from working directory"),
         ('init_deploy_dir *', "Initialize a deployment directory for a Drupal project"),
@@ -88,8 +89,8 @@ def load_action(action_name):
     action_mod = None
     if action_name == 'init_dev_dir':
         from drupal_deploy_tools.actions import init_dev_dir as action_mod
-    if action_name == 'add_package':
-        from drupal_deploy_tools.actions import add_package as action_mod
+    if action_name == 'add_component':
+        from drupal_deploy_tools.actions import add_component as action_mod
     return action_mod
 
 

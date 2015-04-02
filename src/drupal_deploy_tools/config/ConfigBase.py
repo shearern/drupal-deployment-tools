@@ -75,3 +75,11 @@ class ConfigBase(object):
         if not self._config.has_section(section):
             self._config.add_section(section)
         self._config.set(section, key, value)
+
+        print "%s.%s = %s" % (section, key, value)
+
+
+    def _list_sections(self):
+        return self._config.sections()
+
+    
