@@ -62,12 +62,12 @@ def list_commands():
     '''List the actions (scripts) that can be invoked'''
 
     commands = (
-        ('add_component',   "Call to create a new component"),
-        ('update_component',"Pull down the latest version of a component"),
-        ('build',           "Build deployment package from working directory"),
-        ('init_deploy_dir', "Initialize a deployment directory for a Drupal project"),
+        ('add_component *',   "Call to create a new component"),
+        ('update_component *',"Pull down the latest version of a component"),
+        ('build *',           "Build deployment package from working directory"),
+        ('init_deploy_dir *', "Initialize a deployment directory for a Drupal project"),
         ('init_dev_dir',    "Initialize the development directory for a Drupal project"),
-        ('install',         "Install a deployment package into the deployment directory"),
+        ('install *',         "Install a deployment package into the deployment directory"),
     )
 
     print "Usage: %s cmd (options)" % (cmd_name())
