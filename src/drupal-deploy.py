@@ -47,7 +47,7 @@ import sys
 import gflags
 from textwrap import dedent
 
-from drupal_deploy_tools.actions.common import ActionUsageError
+from drupal_deploy_tools.actions.common import ActionUsageError, ActionAbort
 
 
 def print_help_header():
@@ -153,5 +153,9 @@ if __name__ == '__main__':
         action_mod.execute(argv[1:])
     except ActionUsageError, e:
         usage_error(str(e), action)
+    except ActionAbort, e:
+        print "ERROR:", str(e)
+        print "ABORTING"
+        sys.exit(3)
 
     print "Finished"

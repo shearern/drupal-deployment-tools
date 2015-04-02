@@ -3,7 +3,7 @@ import os
 import gflags
 from textwrap import dedent
 
-from common import mkdir
+from common import mkdir, ActionAbort
 
 from drupal_deploy_tools.config.ProjectConfig import ProjectConfig
 
@@ -50,7 +50,7 @@ class InitDevDirectory(PyMainWizard):
 
         project_config_path = os.path.join(flags.root, 'drupal-project.ini')
         if os.path.exists(project_config_path):
-            abort("%s already exists" % (project_config_path))
+            raise ActionAbort("%s already exists" % (project_config_path))
         config = ProjectConfig(project_config_path)
 
 
