@@ -20,14 +20,14 @@ class ConfigBase(object):
 
     def load(self):
         with open(self.path, 'rt') as fh:
-            print "Loading", path
+            # print "Loading", self.path
             self._config.readfp(fh)
             self._modified = False
 
 
     def save(self):
         with open(self.path, 'wt') as fh:
-            print "Saving", self.path
+            # print "Saving", self.path
             self._config.write(fh)
 
 
@@ -43,7 +43,7 @@ class ConfigBase(object):
         return False
 
 
-    def _get_ini_prop(self, secton, key, default=False):
+    def _get_ini_prop(self, section, key, default=False):
         '''Check to see if the property exists in the file
 
         @param section: Section name to get property from
@@ -53,8 +53,10 @@ class ConfigBase(object):
             exist.
         '''
         try:
-            return self._config.get('project', 'name')
+            return self._config.get(section, key).strip()
         except ConfigParser.NoSectionError:
+            pass
+        except ConfigParser.NoOptionError:
             pass
 
         # No value found:
@@ -75,8 +77,6 @@ class ConfigBase(object):
         if not self._config.has_section(section):
             self._config.add_section(section)
         self._config.set(section, key, value)
-
-        print "%s.%s = %s" % (section, key, value)
 
 
     def _list_sections(self):

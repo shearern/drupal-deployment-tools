@@ -15,31 +15,84 @@ class ComponentConfig(ConfigBase):
         super(ComponentConfig, self).__init__(config_path)
 
     @property
+    def name(self):
+        path = os.path.abspath(self.path)
+        path = os.path.dirname(path)
+        return os.path.basename(path)
+
+    @property
     def source_type(self):
         '''How is the source of this component retrieved'''
-        self._get_ini_prop('component', 'source type')
+        return self._get_ini_prop('source', 'source_type')
     @source_type.setter
     def source_type(self, value):
-        self._set_ini_prop('component', 'source type', value) 
+        self._set_ini_prop('source', 'source_type', value) 
 
     
     @property
     def url(self):
         '''URL to retrieve component source from'''
-        self._get_ini_prop('component', 'url')
+        return self._get_ini_prop('source', 'url')
     @url.setter
     def url(self, value):
-        self._set_ini_prop('component', 'url', value)
+        self._set_ini_prop('source', 'url', value)
 
 
     @property
     def version(self):
         '''Version of the component in source'''
-        self._get_ini_prop('component', 'version')
+        return self._get_ini_prop('component', 'version')
     @version.setter
     def version(self, value):
         self._set_ini_prop('component', 'version', value)
 
+
+    @property
+    def archive_root(self):
+        '''In the archive downloaded, the root folder to copy files from
+
+        Supports token replacements:
+            {name}  The name of the component
+            {ver}   The version of the component
+        '''
+        return self._get_ini_prop('source', 'archive_root')
+    @archive_root.setter
+    def archive_root(self, value):
+        self._set_ini_prop('source', 'archive_root', value)
+    @property
+    def actual_archive_root(self):
+        '''The root folder expected for this version.  Replaces tokens'''
+        path = self.archive_root
+        path = path.replace('{name}', self.name)
+        path = path.replace('{ver}', self.version)
+        return path
+    def translate_archive_path(self, path):
+        '''Apply archive_root to convert path to file in archive to source
+
+        For example, in drupal base, there is a file:
+            drupal-7.36/includes/actions.inc
+        If the .archive_root pattern is {name}-{ver}, then return:
+            includes/actions.inc
+        '''
+        expect = self.actual_archive_root
+        if path.startswith('/'):
+            path = path[1:]
+        if len(expect) == 0 or expect == '.' or expect == './':
+            return path
+        elif path.startswith(expect):
+            path = path[len(expect):]
+        else:
+            if len(path) > 0:
+                msg = "Warning: Archive path %s doesn't match root pattern: %s"
+                print msg % (path, self.archive_root)
+            else:
+                return None
+
+        if path.startswith('/'):
+            path = path[1:]
+
+        return path
+    
 
     @property
     def mappings(self):

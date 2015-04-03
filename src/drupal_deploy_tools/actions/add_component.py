@@ -4,8 +4,7 @@ import gflags
 from textwrap import dedent
 
 from common import ActionUsageError, ActionAbort, mkdir
-from common_dev_repo import find_dev_repo_path
-from common_download import retrieve_component
+from common_dev_repo import find_dev_repo_obj
 
 from drupal_deploy_tools.config.ComponentConfig import ComponentConfig
 from drupal_deploy_tools.config.ComponentFileMap import ComponentFileMap
@@ -66,16 +65,16 @@ class CreateComponentWizard(PyMainWizard):
     def execute(self):
         flags = gflags.FLAGS
 
-        root_dir = find_dev_repo_path()
+        tree = find_dev_repo_obj()
 
         # Make sure components directory exists
-        components_path = os.path.join(root_dir, 'components')
+        components_path = os.path.join(tree.path, 'components')
         if not os.path.exists(components_path):
             self.inform_user_of_action("Creating " + components_path)
             os.mkdir(components_path)
 
         name = self.ask_simple('name',
-            "Name for this comopnent",
+            "Name for this component",
             default = flags.name)
 
         path = os.path.join(components_path, name)
@@ -122,7 +121,7 @@ class CreateComponentWizard(PyMainWizard):
             "What type of component is this",
             options=['module', 'theme', 'library', 'base', 'other'])
 
-        # Write package attribtes
+        # -- Write package attribtes -----------------------------------------
 
         self.inform_user_of_action("Creating " + path)
         os.mkdir(path)
@@ -130,13 +129,21 @@ class CreateComponentWizard(PyMainWizard):
         config_path = os.path.join(path, 'component.ini')
         config = ComponentConfig(config_path)
 
+        # Version
         config.version = version
+
+        # Source
         config.source_type = stype
         if stype == ComponentConfig.SOURCE_DL_AND_UNPACK:
             config.url = url
         else:
             raise NotImplementedError()
 
+        # Archive root folder
+        if map_type == 'base':
+            config.archive_root = '{name}-{ver}'
+
+        # Mappings
         for pattern in MAP_TPLS[map_type]:
             config.add_mapping(ComponentFileMap(pattern[0], pattern[1]))
 
@@ -147,8 +154,11 @@ class CreateComponentWizard(PyMainWizard):
         self.inform_user_of_action("Creating " + sub_path)
         os.mkdir(sub_path)
 
+        # Download
         self.inform_user_of_action("Downloading component source")
-        retrieve_component(config)
+        tree.get_component(name).retrieve_source()
+
+
 
 def execute(argv):
     run_wizard(CreateComponentWizard())

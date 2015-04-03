@@ -3,6 +3,7 @@ import os
 import gflags
 
 from common import ActionUsageError
+from drupal_deploy_tools.file_obj.DevTree import DevTree
 
 gflags.DEFINE_string('dev_repo',
     short_name = 'w',
@@ -42,4 +43,8 @@ def find_dev_repo_path():
     if path is None:
         raise ActionUsageError("Not in a drupal development repo")
     return path
+
+
+def find_dev_repo_obj():
+    return DevTree(find_dev_repo_path())
 

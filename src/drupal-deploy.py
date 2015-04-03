@@ -63,7 +63,6 @@ def list_commands():
 
     commands = (
         ('add_component',   "Call to create a new component"),
-        ('download',        "Download the source for a component")
         ('update_component *',"Pull down the latest version of a component"),
         ('build *',           "Build deployment package from working directory"),
         ('init_deploy_dir *', "Initialize a deployment directory for a Drupal project"),
