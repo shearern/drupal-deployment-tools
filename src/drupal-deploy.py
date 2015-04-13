@@ -63,7 +63,7 @@ def list_commands():
 
     commands = (
         ('add_component',   "Call to create a new component"),
-        ('update_component *',"Pull down the latest version of a component"),
+        ('update_component',"Pull down the latest version of a component"),
         ('build *',           "Build deployment package from working directory"),
         ('init_deploy_dir *', "Initialize a deployment directory for a Drupal project"),
         ('init_dev_dir',    "Initialize the development directory for a Drupal project"),
@@ -90,6 +90,8 @@ def load_action(action_name):
         from drupal_deploy_tools.actions import init_dev_dir as action_mod
     if action_name == 'add_component':
         from drupal_deploy_tools.actions import add_component as action_mod
+    if action_name == 'update_component':
+        from drupal_deploy_tools.actions import update_component as action_mod
     return action_mod
 
 

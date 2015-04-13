@@ -142,6 +142,11 @@ class CreateComponentWizard(PyMainWizard):
         # Archive root folder
         if map_type == 'base':
             config.archive_root = '{name}-{ver}'
+        elif map_type in ['module', 'theme', 'library']:
+            config.archive_root = '{name}'
+        else:
+            config.archive_root = '.'
+
 
         # Mappings
         for pattern in MAP_TPLS[map_type]:
