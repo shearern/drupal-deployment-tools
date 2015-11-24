@@ -1,0 +1,4 @@
+#!/usr/bin/python
+'''
+dt_add_component - Add a component to the Drupal project
+'''

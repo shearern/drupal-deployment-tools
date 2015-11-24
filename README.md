@@ -4,86 +4,33 @@ Drupal Deployment Tools
 Nate's common tools for deploying Drupal instances.
 
 
-Summary from src/drupal-depoly.sh
----------------------------------
+Summary
+-------
 
-    +-----------+                                                                                  
-    |           |                         +-------------------+   +-------------------+
-    | External  |                         |                   |   |                   |
-    | Modules/  +--> add_component / +----> Working Directory |   |  Deploy Directory |
-    | Themes/   |    update_component     |                   |   |                   |
-    | Libraries |                         +-----------+-------+   +----^--------------+
-    |           |                                     |                |       
-    +-----------+                                     |                |       
-                                                      v                |       
-                                                    build            install    
-                                                      |                ^
-                                                      v                |
-                                                     website-1.0.0.drupal
+This project has the goal of assisting with the creation and maintenance of a
+Drupal project.  At a high level, it seeks to assist with:
 
-
-Typical Usage
--------------
-
-On development workstation, in project directory, run:
-
-    $ drupal-deploy.py init_dev_dir
-    $ vim drupal-project.ini
-    $ drupal-deploy.py add_component --name=base --type=drupal_module --ver=7.35
-        --url=http://ftp.drupal.org/files/projects/drupal-7.35.tar.gz
-    $ drupal-deploy.py build --ver=1.0.0
-
-On server, in deployment directory, run:
-
-    # drupal-deploy.py init_deploy_dir
-    # vim drupal-instance.ini
-    # drupal-deploy install my-project-1.0.0.drupal
+  1. Managing components (e.g.: modules) quickly and easily such as installing,
+     removing, and upgrading.
+  2. Converting a development instance into a production instance by helping
+     with applying instance specific settings such as database parameters.
+  3. Backing up and cloning instances.
 
 
 Glossary
 --------
 
-    Deployment Directory    Directory on server where drupal project is deployed
-                            to.  This directory will have multiple directories
-                            including the www/ directory containing the files to
-                            serve.
-    Deployment Package      A single file representing a specific version of the
-                            project code and assets (excluding user files).
-                            This can be "installed" into a Deployment Directory.
-    Development Directory   Project directory on development workstation where
-                            developer creates the Druapl proejct
+    Component               Any distributed (or locally developed) Drupal asset
+                            such as modules, themes, and libraries.  Event the
+                            Drupal base code is considered a component
+    Drupal Rool Directory   The directory that the Drupal base archive is copied
+                            to, which includes index.php.
+    Project Directory       The directory that contains an entire Drupal project.
+                            This can be the same as the Drupal Root Directory,
+                            or it can be a higher level directory.
 
 
-Deployment Directory Structure
-------------------------------
-
-This tools assumes that deployed file structures looks like this:
-
-    apache/         - Web server config files are placed here (apache site config)
-    backups/        - Is the directory where user backups are placed
-    www/            - All drupal application code is placed here
-    manifest        - Lists all of the "installed" files deployed to this site
-    instance.ini    - Defines instance specific values such as the DB password
-
-
-
-Component Directory Structure
------------------------------
-
-The components/ directory contains the building blocks of each website (deployed
-code and static assets), as well as instructions for adapting these source files
-for specific deplyment instances.
-
-The basic structure is:
-
-    component.ini       - Is the configuration for this component.
-    source/             - Is the source as delivered from the upstream source
-                          $ drupal_deply update_component
-    tmp/                - Is created as needed for performing operations
-
-
-
-Component Configuration (component.ini)
+Component Configuration (component.ini) - TODO: REVAMP
 ---------------------------------------
 
 The component.ini file describes the component in the folder, and provides

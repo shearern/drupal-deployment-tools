@@ -1,0 +1,1 @@
+'''All the commands that can be executed by the tool'''
