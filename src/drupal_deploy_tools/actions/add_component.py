@@ -164,6 +164,9 @@ class CreateComponentWizard(PyMainWizard):
         tree.get_component(name).retrieve_source()
 
 
+    def say_goodbye(self):
+        pass
+
 
 def execute(argv):
     run_wizard(CreateComponentWizard())

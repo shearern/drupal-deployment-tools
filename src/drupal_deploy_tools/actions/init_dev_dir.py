@@ -1,4 +1,4 @@
-'''Initialize development repo for deployment'''
+'''Initialize development repo for a Drupal project'''
 import os
 import gflags
 from textwrap import dedent

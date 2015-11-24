@@ -148,7 +148,7 @@ directory.  For example:
     www/site/all/modules/panels/templates
     www/site/all/modules/panels/templates/panels-pane.tpl.php
 
-Each mapping as at least keys:
+Each mapping has at least keys:
 
  - **source**: maps paths in the source folder.  These will be converted
                to regular expressions, but are expressed using normal
