@@ -20,6 +20,11 @@ Drupal project.  At a high level, it seeks to assist with:
 Glossary
 --------
 
+    Asset                   Assets are the general name for any of the non-user
+                            generated files that make up a Drupal install.  This
+                            includes PHP code, Images, JavaScript, CSS, etc.
+                            Asset files shouldn't be writable by the www-user.
+
     Component               Any distributed (or locally developed) Drupal asset
                             such as modules, themes, and libraries.  Event the
                             Drupal base code is considered a component
@@ -59,11 +64,11 @@ needed to build a Drupal instance.  This includes:
  - Configuration explaning how to access the instances of this Drupal project
  
  
-Example Structure:
+Structure:
 
     project.yml
     components/
-     |   base/
+     |--base/
      |   `--(see component section)
      `--panels/
          `--(see component section)
@@ -71,6 +76,34 @@ Example Structure:
 Commands:
 
     $ dt_init -n "Project Name"
+    
+    
+Component Folder
+----------------
+
+The assets that make up a Drupal instance are divided into components.  The most
+familiar components are modules, but also include:
+
+ - **base**: The base of the Drupal install
+ - **module**: A [Drupal module](https://www.drupal.org/project/project_module/categories)
+ - **theme**: A [Drupal theme](https://www.drupal.org/project/project_theme)
+ - **lib**: Any library.  Often PHP or JavaScript libraries
+ - **other**: Any other collection of asset files to copy or compile into the Drupal instance
+  
+Structure:
+
+    component.yml
+    source/
+     `--(upstream source files)
+  
+Commands:
+
+    $ dt_add_component -n component_name -t module|theme|lib|base|other (module-archive.tar.gz)
+
+
+
+
+
 
 
 
