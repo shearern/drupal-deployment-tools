@@ -23,11 +23,55 @@ Glossary
     Component               Any distributed (or locally developed) Drupal asset
                             such as modules, themes, and libraries.  Event the
                             Drupal base code is considered a component
+                            
+    Backup                  A backup (as related to this tool) is a complete copy
+                            of a Drupal instance including compiled files, user
+                            files, and database records.
+                             
+    Instance                Generally refers to a single instalation of a Drupal
+                            site.  For example, a single project may be deployed
+                            to three instances: production, testing, and development
+                            
     Drupal Rool Directory   The directory that the Drupal base archive is copied
                             to, which includes index.php.
+                            
     Project Directory       The directory that contains an entire Drupal project.
                             This can be the same as the Drupal Root Directory,
                             or it can be a higher level directory.
+
+
+Development Workflow
+--------------------
+
+ 1. First, create a project folder to work from.
+
+     dt_init -n "Project Name"
+
+
+Project Folder
+--------------
+
+The project folder is the directory that contains all of the assets, code and instructions
+needed to build a Drupal instance.  This includes:
+
+ - The component source files (components/)
+ - instructions for mapping component files to the drupal directory structure
+ - Configuration explaning how to access the instances of this Drupal project
+ 
+ 
+Example Structure:
+
+    project.yml
+    components/
+     |   base/
+     |   `--(see component section)
+     `--panels/
+         `--(see component section)
+        
+Commands:
+
+    $ dt_init -n "Project Name"
+
 
 
 Component Configuration (component.ini) - TODO: REVAMP
