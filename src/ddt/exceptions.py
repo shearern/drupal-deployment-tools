@@ -1,0 +1,3 @@
+
+
+class ProjectFolderError(Exception): pass
